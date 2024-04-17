@@ -7,8 +7,9 @@ class ProductManager {
 
     constructor(){
         this.products = []
-        this.nextID = 1
-        this.productsFile = "products.json"
+        this.nextID = 1 
+        this.productsFile = "Products.json"
+        this.initializeNextID();
                
 
     }
@@ -17,7 +18,11 @@ class ProductManager {
     async readProducts() {
         try {
             const data = await fs.readFile(this.productsFile, 'utf8');
-            return JSON.parse(data);
+            if (data.trim() === '') {
+                return [];
+            } else {
+                return JSON.parse(data);
+            }
         } catch (error) {
             if (error.code === 'ENOENT') {
                return[];
@@ -26,43 +31,47 @@ class ProductManager {
             }
         }
     }
+    async initializeNextID() {
+        const products = await this.readProducts();
+        if (products.length > 0) {
+            this.nextID = Math.max(...products.map(product => product.id)) + 1;
+        }}
 
-    async saveProductsToFile() {
-         try {
-        await fs.writeFile(this.productsFile, JSON.stringify(this.products, null, 2));
-        
-    } catch (error) {
-        console.error("Error al guardar productos en el archivo:", error);
-    }
-}
     
 
-    async addProduct(product) {
-        try {
-            if (!this.isProductValid(product)) {
-                throw new Error("El producto no es válido");
+        async addProduct(product) {
+            try { 
+                let products = await this.readProducts();
+        
+                if (!this.isProductValid(product)) {
+                    throw new Error("El producto no es válido");
+                }
+                
+                if (await this.isCodeDuplicate(product.code)) {
+                    throw new Error("El código del producto ya está en uso");
+                }
+                
+                product.id = this.nextID++; 
+                products.push(product);
+                
+                await fs.writeFile(this.productsFile, JSON.stringify(products, null, 2));
+            } catch (error) {
+                throw error;
             }
-            
-            if (this.isCodeDuplicate(product.code)) {
-                throw new Error("El código del producto ya está en uso");
-            }
-
-            /* product.id = this.nextID++; */
-            this.products.push(product);
-            await this.saveProductsToFile();
-            return product;
-        } catch (error) {
-            throw error;
         }
-    }
 
     async getProducts() {
-        return this.products;
-    }
+        try{
+            let products = await this.readProducts();
+        return products
+    }catch (error){
+        return []
+    }}
 
     async getProductById(product_id) {
         try {
-            let busId = this.products.find((product) => product.id === product_id);
+            let products = await this.readProducts();
+            let busId = products.find((product) => product.id === product_id);
             if (!busId) {
                 throw new Error("Producto no encontrado");
             }
@@ -74,10 +83,11 @@ class ProductManager {
 
     async deleteProduct(product_id) {
         try {
-            let busId = this.products.findIndex((product) => product.id === product_id);
+            let products = await this.readProducts();
+            let busId = products.findIndex((product) => product.id === product_id);
             if (busId !== -1) {
-                this.products.splice(busId, 1);
-                await this.saveProductsToFile()
+                products.splice(busId, 1);
+                await fs.writeFile(this.productsFile, JSON.stringify(products, null, 2));
             } else {
                 throw new Error("Producto no encontrado");
             }
@@ -88,10 +98,11 @@ class ProductManager {
 
     async updateProduct(product_id, updatedFields) {
         try {
-            const busId = this.products.findIndex((product) => product.id === product_id);
+            let products = await this.readProducts();
+            const busId = products.findIndex((product) => product.id === product_id);
             if (busId !== -1) {
-                this.products[busId] = { ...this.products[busId], ...updatedFields };
-                await this.saveProductsToFile();
+                products[busId] = { ...products[busId], ...updatedFields };
+                await fs.writeFile(this.productsFile, JSON.stringify(products, null, 2));
             } else {
                 throw new Error("Producto no encontrado");
             }
@@ -111,8 +122,9 @@ class ProductManager {
         )
     }
 
-    isCodeDuplicate(code) {
-        return this.products.some((p) => p.code === code);
+   async isCodeDuplicate(code) {
+        let products = await this.readProducts();
+        return products.some((p) => p.code === code);
     }
 }
 
@@ -121,3 +133,19 @@ class ProductManager {
 
 module.exports = ProductManager
 
+/* 
+const manager = new ProductManager()
+
+
+manager.deleteProduct(7)
+ 
+ 
+
+manager.addProduct({title: "Picadillo", description: "Swift", price: 500, thumbnail: 'https://www.swiftdirectoacasa.com.ar/media/catalog/product/p/i/picadillofrente_1.png?optimize=high&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700&format=jpeg&dpr=1%201x', code: '007', stock: 19})  
+
+
+
+manager.updateProduct( 1 , {price:500000}) 
+
+
+*/

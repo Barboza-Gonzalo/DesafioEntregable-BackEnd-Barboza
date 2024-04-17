@@ -5,7 +5,7 @@ const PORT = 8080
 
 
 
-
+const manager = new ProductManager()
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
@@ -14,16 +14,27 @@ app.use(express.json())
 
 
 
-app.get('/products',(req ,res)=>{
-    
-    getProducts()
+app.get('/products',async (req ,res)=>{
+    try{
+    let products = await manager.getProducts()
     res.send(products)
+}catch(error){
+
+}
     
 })
 
 
-app.get('/products/:pid',(req ,res)=>{
-    res.json({})
+app.get('/products/:pid',async (req ,res)=>{
+    try{
+        const productId = parseInt(req.params.pid);
+        const product = await manager.getProductById(productId);
+        res.send(product)
+
+    }catch(error){
+
+    }
+    
 })
 
 

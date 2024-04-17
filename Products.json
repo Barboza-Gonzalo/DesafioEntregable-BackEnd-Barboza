@@ -1,0 +1,65 @@
+[
+  {
+    "title": "Mermelada",
+    "description": "Arcor de Naranja",
+    "price": 500000,
+    "thumbnail": "https://jumboargentina.vtexassets.com/arquivos/ids/667311-1200-auto?v=637677706577430000&width=1200&height=auto&aspect=true",
+    "code": "001",
+    "stock": 25,
+    "id": 1
+  },
+  {
+    "title": "Mermelada",
+    "description": "Arcor de Frutilla",
+    "price": 1500,
+    "thumbnail": "https://arcorencasa.com/wp-content/uploads/2023/07/20230718-13218.jpg",
+    "code": "008",
+    "stock": 15,
+    "id": 2
+  },
+  {
+    "title": "Mermelada",
+    "description": "Arcor de Ciruela",
+    "price": 1500,
+    "thumbnail": "https://arcorencasa.com/wp-content/uploads/2023/07/20230718-13220.jpg",
+    "code": "003",
+    "stock": 15,
+    "id": 3
+  },
+  {
+    "title": "Jugo",
+    "description": "Clight de Pera",
+    "price": 700,
+    "thumbnail": "https://statics.dinoonline.com.ar/imagenes/full_600x600_ma/3051996_f.jpg",
+    "code": "004",
+    "stock": 20,
+    "id": 4
+  },
+  {
+    "title": "Jugo",
+    "description": "Clight de Naranja",
+    "price": 700,
+    "thumbnail": "https://ardiaprod.vtexassets.com/arquivos/ids/294330-1200-auto?v=638458628813870000&width=1200&height=auto&aspect=true",
+    "code": "005",
+    "stock": 5,
+    "id": 5
+  },
+  {
+    "title": "Galletas",
+    "description": "Surtido Bagley",
+    "price": 2500,
+    "thumbnail": "https://carrefourar.vtexassets.com/arquivos/ids/318906-1200-auto?v=638181154854500000&width=1200&height=auto&aspect=true",
+    "code": "006",
+    "stock": 115,
+    "id": 6
+  },
+  {
+    "title": "Picadillo",
+    "description": "Swift",
+    "price": 500,
+    "thumbnail": "https://www.swiftdirectoacasa.com.ar/media/catalog/product/p/i/picadillofrente_1.png?optimize=high&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700&format=jpeg&dpr=1%201x",
+    "code": "007",
+    "stock": 19,
+    "id": 7
+  }
+]
