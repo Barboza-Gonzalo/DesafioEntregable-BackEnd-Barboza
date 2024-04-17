@@ -145,7 +145,8 @@ manager.addProduct({title: "Picadillo", description: "Swift", price: 500, thumbn
 
 
 
-manager.updateProduct( 1 , {price:500000}) 
+manager.updateProduct( 1 , {price:500000 , stock:1500}) 
 
 
 */
+
